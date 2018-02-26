@@ -1,20 +1,22 @@
-import org.apache.log4j.Level
 import java.util.regex.Pattern
-import java.util.regex.Matcher
+import org.apache.log4j.{Level, Logger}
+import com.typesafe.config.ConfigFactory
+import scala.io.Source
+import java.io.InputStream
 
-object Utilities {
-  /** Makes sure only ERROR messages get logged to avoid log spam. */
+
+object TwitterSetupAndLog {
+  /** Makes sure all INFO messages get logged. */
   def setupLogging() = {
-    import org.apache.log4j.{Level, Logger}
+    val loggerLevel = ConfigFactory.load().getString("loggerLevel")
     val rootLogger = Logger.getRootLogger()
-    rootLogger.setLevel(Level.ERROR)
+    rootLogger.setLevel(Level.toLevel(loggerLevel))
   }
 
   /** Configures Twitter service credentials using twiter.txt in the main workspace directory */
   def setupTwitter() = {
-    import scala.io.Source
-
-    for (line <- Source.fromFile("resources/creds.txt").getLines) {
+    val stream : InputStream = getClass.getResourceAsStream("creds.txt")
+    for (line <- Source.fromInputStream(stream).getLines) {
       val fields = line.split("=")
       if (fields.length == 2) {
         System.setProperty("twitter4j.oauth." + fields(0), fields(1))

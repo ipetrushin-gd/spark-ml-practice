@@ -23,3 +23,4 @@ assemblyMergeStrategy in assembly := {
  artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   artifact.name + "_" + sv.binary + "-" + sparkVersion.value + "_" + module.revision + "." + artifact.extension
 }
+libraryDependencies += "com.typesafe" % "config" % "1.2.1"
