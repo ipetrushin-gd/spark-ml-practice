@@ -15,7 +15,9 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   "mrpowers" % "spark-daria" % "2.2.0_0.12.0" % "test",
   "org.apache.bahir" %% "spark-streaming-twitter" % "2.2.0",
-  "com.typesafe" % "config" % "1.2.1"
+  "com.typesafe" % "config" % "1.2.1",
+  "ch.qos.logback" % "logback-classic" % "1.1.7",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 )
 
 assemblyMergeStrategy in assembly := {

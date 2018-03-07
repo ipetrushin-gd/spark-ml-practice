@@ -1,16 +1,15 @@
 import org.apache.spark.streaming.twitter._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import TwitterSetup.setupTwitter
-import LoggerSetup.setupLogging
 import twitter4j.FilterQuery
+import com.typesafe.scalalogging.LazyLogging
 
-object TwitterStream {
+object TwitterStream extends LazyLogging {
   def main(args: Array[String]) {
 
     // Configure Twitter credentials using twitter.txt
     setupTwitter()
     val ssc = new StreamingContext("local[*]", "PrintTweets", Seconds(1))
-    setupLogging()
 
     // Create a DStream from Twitter using our streaming context
     val filteredQuery = new FilterQuery().track("blockchain", "btc", "crypto", "cryptocurrency",
