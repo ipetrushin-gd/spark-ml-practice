@@ -1,6 +1,7 @@
 import org.apache.spark.streaming.twitter._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import TwitterSetupAndLog._
+import TwitterSetup.setupTwitter
+import LoggerSetup.setupLogging
 import twitter4j.FilterQuery
 
 object TwitterStream {
