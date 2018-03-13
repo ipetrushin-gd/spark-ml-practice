@@ -8,7 +8,7 @@ sparkVersion := "2.2.1"
 
 retrieveManaged := true
 
-sparkComponents ++= Seq("sql", "streaming")
+sparkComponents ++= Seq("sql", "streaming", "mllib")
 
 libraryDependencies ++= Seq(
   "MrPowers" % "spark-fast-tests" % "2.2.0_0.5.0" % "test",
