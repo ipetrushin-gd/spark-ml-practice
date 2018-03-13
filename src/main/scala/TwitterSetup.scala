@@ -2,7 +2,6 @@ import scala.io.Source
 import java.io.InputStream
 
 object TwitterSetup {
-  /** Configures Twitter service credentials using twiter.txt in the main workspace directory */
   def setupTwitter() = {
     val stream : InputStream = getClass.getResourceAsStream("creds.txt")
     for (line <- Source.fromInputStream(stream).getLines) {
