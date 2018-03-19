@@ -25,7 +25,7 @@ object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper {
       .map(line => line.stripLineEnd)
       .filter(line => line.length() > 0)
 
-    val nonEmptyTweetsNormalized = normalizeTweets(nonEmptyTweets)
+    val nonEmptyTweetsNormalized = nonEmptyTweets.transform[String](normalizeTweets())
 
     val structuredData = nonEmptyTweetsNormalized
       .withColumn("text", substringUdfText(col("value")))

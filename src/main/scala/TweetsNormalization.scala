@@ -1,7 +1,7 @@
 import org.apache.spark.sql.Dataset
 
 object TweetsNormalization extends SparkSessionWrapper {
-  def normalizeTweets(tweets: Dataset[String]) : Dataset[String] = {
+  def normalizeTweets()(tweets: Dataset[String]) : Dataset[String] = {
     import spark.implicits._
 
     val normalizedTweets = tweets
