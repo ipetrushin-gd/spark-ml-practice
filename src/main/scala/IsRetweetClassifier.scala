@@ -6,6 +6,7 @@ import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
 import TweetsNormalization.normalizeTweets
+import com.typesafe.config.ConfigFactory
 
 object IsRetweetClassifier extends LazyLogging {
   def main(args: Array[String]) {
@@ -17,8 +18,10 @@ object IsRetweetClassifier extends LazyLogging {
 
     import spark.sqlContext.implicits._
 
+    val config = ConfigFactory.parseResources("application.conf")
+
     val text = spark
-      .sparkContext.wholeTextFiles("hdfs:///user/ilos/tweets/tweets.txt")
+      .sparkContext.wholeTextFiles(config.getString("input.path"))
       .map { case (filename, content) => content}
 
     val tweets = text
