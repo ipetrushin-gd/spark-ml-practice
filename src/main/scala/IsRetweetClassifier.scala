@@ -1,3 +1,4 @@
+import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.sql.types._
@@ -5,7 +6,7 @@ import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
 
-object IsRetweetClassifier {
+object IsRetweetClassifier extends LazyLogging {
   def main(args: Array[String]) {
     val spark = SparkSession
       .builder()
@@ -76,9 +77,8 @@ object IsRetweetClassifier {
       .map(sample => if (sample.getAs[Int]("label") == sample.getAs[Double]("prediction").toInt) 1 else 0)
       .reduce(_+_).toFloat / testPrediction.count()
 
-    val testResultRDD = spark.sparkContext.parallelize(Seq(testResult))
-    testResultRDD.saveAsTextFile("hdfs:///user/ilos/tweets/results.txt")
-    println("Model accuracy on test data: ")
-    println((testResult * 100 + 0.5).toInt)
+    val testAccuracyAsIntegerNumberOfPercents = (testResult * 100 + 0.5).toInt
+
+    logger.info("Model accuracy on test data: " + testAccuracyAsIntegerNumberOfPercents.toString)
   }
 }
