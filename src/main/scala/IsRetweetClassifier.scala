@@ -5,6 +5,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
+import TweetsNormalization.normalizeTweets
 
 object IsRetweetClassifier extends LazyLogging {
   def main(args: Array[String]) {
@@ -27,10 +28,7 @@ object IsRetweetClassifier extends LazyLogging {
       .map(line => line.stripLineEnd)
       .filter(line => line.length() > 0)
 
-    val nonEmptyTweetsNormalized = nonEmptyTweets
-      .map(line => line.replaceAll(", true\\)", ", 1"))
-      .map(line => line.replaceAll(", false\\)", ", 0"))
-      .map(line => line.replaceAll(", und, ", ", ??, "))
+    val nonEmptyTweetsNormalized = normalizeTweets(nonEmptyTweets)
 
     val structuredDataRDD = nonEmptyTweetsNormalized.map(line => Row(
       line.substring(0, line.length() - 7),
