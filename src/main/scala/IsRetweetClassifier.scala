@@ -68,7 +68,7 @@ object IsRetweetClassifier {
     val pipeline = new Pipeline()
       .setStages(Array(tokenizer, hashingTF, lr))
 
-    val model = pipeline.fit(structuredData)
+    val model = pipeline.fit(train)
 
     val testPrediction = model.transform(test)
 
