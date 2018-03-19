@@ -19,6 +19,7 @@ object TwitterStream extends LazyLogging {
       .map(status => status.getText())
 
     statuses.print()
+    statuses.repartition(1).saveAsTextFiles("/user/ilos/tweets/tweets_for_timestpamp", "")
 
     ssc.start()
     ssc.awaitTermination()
