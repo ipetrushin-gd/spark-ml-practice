@@ -1,7 +1,10 @@
-import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 object TweetsNormalization {
-  def normalizeTweets(tweets: RDD[String]) : RDD[String] = {
+  def normalizeTweets(tweets: Dataset[String]) : Dataset[String] = {
+    val spark = SparkSession.builder().getOrCreate()
+    import spark.implicits._
+
     val normalizedTweets = tweets
       .map(line => line
         .replaceAll(", true\\)", ", 1")

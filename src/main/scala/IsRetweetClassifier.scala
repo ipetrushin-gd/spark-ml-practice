@@ -1,12 +1,14 @@
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
-import org.apache.spark.sql.types._
-import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
 import TweetsNormalization.normalizeTweets
 import com.typesafe.config.ConfigFactory
+import org.apache.spark.sql.functions.col
+import SubstringUdfFunctions._
+import org.apache.spark.sql.types.IntegerType
 
 object IsRetweetClassifier extends LazyLogging {
   def main(args: Array[String]) {
@@ -16,15 +18,14 @@ object IsRetweetClassifier extends LazyLogging {
       .master("yarn")
       .getOrCreate()
 
-    import spark.sqlContext.implicits._
+    import spark.implicits._
 
     val config = ConfigFactory.parseResources("application.conf")
 
-    val text = spark
-      .sparkContext.wholeTextFiles(config.getString("input.path"))
-      .map { case (filename, content) => content}
+    val text = spark.read.textFile(config.getString("input.path"))
+    val aggregatedText = text.agg(concat_ws("\n", collect_list("value"))).as[String]
 
-    val tweets = text
+    val tweets = aggregatedText
       .flatMap(line => line.split("List\\("))
 
     val nonEmptyTweets = tweets
@@ -33,19 +34,11 @@ object IsRetweetClassifier extends LazyLogging {
 
     val nonEmptyTweetsNormalized = normalizeTweets(nonEmptyTweets)
 
-    val structuredDataRDD = nonEmptyTweetsNormalized.map(line => Row(
-      line.substring(0, line.length() - 7),
-      line.substring(line.length() - 5, line.length() - 3),
-      line.substring(line.length() - 1).toInt
-    ))
-
-    val schema = new StructType()
-      .add(StructField("text", StringType, nullable = false))
-      .add(StructField("language", StringType, nullable = false))
-      .add(StructField("label", IntegerType, nullable = false))
-
-    val structuredData = spark
-      .createDataFrame(structuredDataRDD, schema)
+    val structuredData = nonEmptyTweetsNormalized
+      .withColumn("text", substringUdfText(col("value")))
+      .withColumn("language", substringUdfLanguage(col("value")))
+      .withColumn("label", substringUdfIsRT(col("value")).cast(IntegerType))
+      .drop(col("value"))
       .withColumn("id", monotonically_increasing_id())
 
     val trainLength = (structuredData.count() * 0.8).toInt
