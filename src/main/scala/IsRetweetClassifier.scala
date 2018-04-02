@@ -5,9 +5,7 @@ import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
 import TweetsNormalization.normalizeTweets
 import com.typesafe.config.ConfigFactory
-import org.apache.spark.sql.functions.col
-import SubstringUdfFunctions._
-import org.apache.spark.sql.types.IntegerType
+import FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
 
 object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper {
   def main(args: Array[String]) {
@@ -28,10 +26,7 @@ object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper {
     val nonEmptyTweetsNormalized = nonEmptyTweets.transform[String](normalizeTweets())
 
     val structuredData = nonEmptyTweetsNormalized
-      .withColumn("text", substringUdfText(col("value")))
-      .withColumn("language", substringUdfLanguage(col("value")))
-      .withColumn("label", substringUdfIsRT(col("value")).cast(IntegerType))
-      .drop(col("value"))
+      .map(extractFeaturesFromRawTweet)
       .withColumn("id", monotonically_increasing_id())
 
     val trainLength = (structuredData.count() * 0.8).toInt
