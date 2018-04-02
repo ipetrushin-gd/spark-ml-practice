@@ -1,8 +1,9 @@
 import org.scalatest.FunSpec
 import TweetsNormalization.normalizeTweets
 import com.typesafe.scalalogging.LazyLogging
+import com.github.mrpowers.spark.fast.tests.DatasetComparer
 
-class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with LazyLogging {
+class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with LazyLogging with DatasetComparer {
   import spark.implicits._
 
   it("Normalize tweets checking") {
@@ -31,6 +32,6 @@ class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with Lazy
     actual.collect().foreach { element => logger.info(element) }
     expected.collect().foreach { element => logger.info(element) }
 
-    assert(actual.collect().sameElements(expected.collect()))
+    assertSmallDatasetEquality(actual, expected)
   }
 }
