@@ -4,7 +4,7 @@ import TwitterSetup.setupTwitter
 import twitter4j.FilterQuery
 import com.typesafe.scalalogging.LazyLogging
 
-object TwitterStream extends LazyLogging {
+object TwitterStream extends LazyLogging with ConfigurationWrapper {
   def main(args: Array[String]) {
 
     setupTwitter()
@@ -19,7 +19,7 @@ object TwitterStream extends LazyLogging {
       .map(status => status.getText())
 
     statuses.foreachRDD { rdd => if (!rdd.isEmpty()) rdd.collect().foreach { element => logger.info(element) } }
-    statuses.repartition(1).saveAsTextFiles("/user/ilos/tweets/tweets_for_timestpamp", "")
+    statuses.repartition(1).saveAsTextFiles(config.getString("output.path"), "")
 
     ssc.start()
     ssc.awaitTermination()

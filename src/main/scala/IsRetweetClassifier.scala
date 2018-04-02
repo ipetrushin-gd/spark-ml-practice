@@ -4,14 +4,11 @@ import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.sql.functions._
 import TweetsNormalization.normalizeTweets
-import com.typesafe.config.ConfigFactory
 import FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
 
-object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper {
+object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper with ConfigurationWrapper {
   def main(args: Array[String]) {
     import spark.implicits._
-
-    val config = ConfigFactory.parseResources("application.conf")
 
     val text = spark.read.textFile(config.getString("input.path"))
     val aggregatedText = text.agg(concat_ws("\n", collect_list("value"))).as[String]
