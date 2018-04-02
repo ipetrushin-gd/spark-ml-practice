@@ -1,7 +1,8 @@
 import org.scalatest.FunSpec
 import TweetsNormalization.normalizeTweets
+import com.typesafe.scalalogging.LazyLogging
 
-class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper {
+class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with LazyLogging {
   import spark.implicits._
 
   it("Normalize tweets checking") {
@@ -27,8 +28,8 @@ class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper {
       "false true false und en ru, en, 0"
     ))
 
-    actual.collect().foreach(println)
-    expected.collect().foreach(println)
+    actual.collect().foreach { element => logger.info(element) }
+    expected.collect().foreach { element => logger.info(element) }
 
     assert(actual.collect().sameElements(expected.collect()))
   }

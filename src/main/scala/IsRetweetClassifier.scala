@@ -66,6 +66,6 @@ object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper {
 
     val testAccuracyAsIntegerNumberOfPercents = (testResult * 100 + 0.5).toInt
 
-    logger.info("Model accuracy on test data: " + testAccuracyAsIntegerNumberOfPercents.toString)
+    logger.info(s"Model accuracy on test data: $testAccuracyAsIntegerNumberOfPercents")
   }
 }

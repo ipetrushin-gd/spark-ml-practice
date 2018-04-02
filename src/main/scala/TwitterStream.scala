@@ -18,7 +18,7 @@ object TwitterStream extends LazyLogging {
     val statuses = tweets
       .map(status => status.getText())
 
-    statuses.print()
+    statuses.foreachRDD { rdd => if (!rdd.isEmpty()) rdd.collect().foreach { element => logger.info(element) } }
     statuses.repartition(1).saveAsTextFiles("/user/ilos/tweets/tweets_for_timestpamp", "")
 
     ssc.start()
