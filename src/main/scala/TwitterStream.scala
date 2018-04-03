@@ -16,9 +16,13 @@ object TwitterStream extends LazyLogging with ConfigurationWrapper {
     val tweets = TwitterUtils.createFilteredStream(ssc, None, Some(filteredQuery))
 
     val statuses = tweets
-      .map(status => status.getText())
+      .map(status => Seq(status.getText(), status.getLang(), status.isRetweet()))
 
-    statuses.foreachRDD { rdd => if (!rdd.isEmpty()) rdd.collect().foreach { element => logger.info(element) } }
+    statuses.foreachRDD {
+      rdd => if (!rdd.isEmpty()) rdd.collect().foreach {
+        element => logger.info(element.mkString(", "))
+      }
+    }
     statuses.repartition(1).saveAsTextFiles(config.getString("output.path"), "")
 
     ssc.start()
