@@ -23,6 +23,7 @@ object TwitterStream extends LazyLogging with ConfigurationWrapper {
         element => logger.info(element.mkString(", "))
       }
     }
+    //TODO: fix output file format to CSV/JSON
     statuses.repartition(1).saveAsTextFiles(config.getString("output.path"), "")
 
     ssc.start()
