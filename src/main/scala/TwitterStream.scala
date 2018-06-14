@@ -20,7 +20,7 @@ object TwitterStream extends LazyLogging with ConfigurationWrapper {
 
     statuses.foreachRDD {
       rdd => if (!rdd.isEmpty()) rdd.collect().foreach {
-        element => logger.info(element.mkString(", "))
+        element => logger.debug(element.mkString(", "))
       }
     }
     //TODO: fix output file format to CSV/JSON
