@@ -6,7 +6,7 @@ import org.apache.spark.sql.functions._
 import TweetsNormalization.normalizeTweets
 import FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
 
-object IsRetweetClassifier extends LazyLogging with SparkSessionWrapper with ConfigurationWrapper {
+object IsRetweetClassifier extends LazyLogging with SparkSessionCreator with ConfigurationCreator {
   def main(args: Array[String]) {
     import spark.implicits._
 

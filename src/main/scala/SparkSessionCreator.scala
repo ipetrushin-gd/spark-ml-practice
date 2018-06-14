@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
 
 //TODO: upgrade to a compile safe API (e.g. pureconfig)
-trait SparkSessionWrapper extends ConfigurationWrapper {
+trait SparkSessionCreator extends ConfigurationCreator {
   lazy val spark: SparkSession = {
     SparkSession
       .builder()

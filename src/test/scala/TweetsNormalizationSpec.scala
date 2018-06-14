@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.LazyLogging
 import com.github.mrpowers.spark.fast.tests.DatasetComparer
 
 //TODO: switch to more concise and powerful spark-testing-base
-class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with LazyLogging with DatasetComparer {
+class TweetsNormalizationSpec extends FunSpec with SparkSessionCreator with LazyLogging with DatasetComparer {
   import spark.implicits._
 
   it("Normalize tweets checking") {
