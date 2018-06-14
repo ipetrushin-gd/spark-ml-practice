@@ -30,9 +30,6 @@ class TweetsNormalizationSpec extends FunSpec with SparkSessionCreator with Lazy
       "false true false und en ru, en, 0"
     ))
 
-    actual.collect().foreach { element => logger.info(element) }
-    expected.collect().foreach { element => logger.info(element) }
-
     assertSmallDatasetEquality(actual, expected)
   }
 }
