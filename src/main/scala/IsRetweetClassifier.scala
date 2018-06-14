@@ -30,7 +30,7 @@ object IsRetweetClassifier extends LazyLogging with SparkSessionCreator {
     val testLength = (structuredData.count() - trainLength).toInt
 
     val train = structuredData.limit(trainLength)
-    val test = structuredData.sort($"id".desc).limit(testLength)
+    val test = structuredData.except(train)
 
     val tokenizer = new Tokenizer()
       .setInputCol("text")
