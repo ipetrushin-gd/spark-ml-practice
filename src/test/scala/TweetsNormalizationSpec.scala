@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.LazyLogging
 import com.github.mrpowers.spark.fast.tests.DatasetComparer
 
 //TODO: switch to more concise and powerful spark-testing-base
-class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with LazyLogging with DatasetComparer {
+class TweetsNormalizationSpec extends FunSpec with SparkSessionCreator with LazyLogging with DatasetComparer {
   import spark.implicits._
 
   it("Normalize tweets checking") {
@@ -29,9 +29,6 @@ class TweetsNormalizationSpec extends FunSpec with SparkSessionWrapper with Lazy
       "Tweet text, ru, 0",
       "false true false und en ru, en, 0"
     ))
-
-    actual.collect().foreach { element => logger.info(element) }
-    expected.collect().foreach { element => logger.info(element) }
 
     assertSmallDatasetEquality(actual, expected)
   }

@@ -4,7 +4,7 @@ import TwitterSetup.setupTwitter
 import twitter4j.FilterQuery
 import com.typesafe.scalalogging.LazyLogging
 
-object TwitterStream extends LazyLogging with ConfigurationWrapper {
+object TwitterStream extends LazyLogging with ConfigurationCreator {
   def main(args: Array[String]) {
 
     setupTwitter()
@@ -20,7 +20,7 @@ object TwitterStream extends LazyLogging with ConfigurationWrapper {
 
     statuses.foreachRDD {
       rdd => if (!rdd.isEmpty()) rdd.collect().foreach {
-        element => logger.info(element.mkString(", "))
+        element => logger.debug(element.mkString(", "))
       }
     }
     //TODO: fix output file format to CSV/JSON
