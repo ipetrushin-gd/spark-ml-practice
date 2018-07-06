@@ -104,9 +104,6 @@ class TextToStructuredDataSpec extends FunSpec with SparkSessionCreator with Laz
       Row("Earn bitcoin on a daily basis!\n1. Follow @slidecoin\n2. Complete instructions in pinned tweet","en",0,2.toLong)
     )), actual.schema)
 
-    actual.foreach(row => {println(row.toString())})
-    expected.foreach(row => {println(row.toString())})
-
     assertSmallDataFrameEquality(actual, expected)
   }
 
