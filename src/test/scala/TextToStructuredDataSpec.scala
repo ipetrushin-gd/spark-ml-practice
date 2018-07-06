@@ -1,11 +1,9 @@
 import com.github.mrpowers.spark.fast.tests.DatasetComparer
-import com.typesafe.scalalogging.LazyLogging
 import org.scalatest.FunSpec
 import TextToStructuredData.getStructuredDataFromText
-import org.apache.spark.sql.Row
 
 //TODO: switch to more concise and powerful spark-testing-base
-class TextToStructuredDataSpec extends FunSpec with SparkSessionCreator with LazyLogging with DatasetComparer {
+class TextToStructuredDataSpec extends FunSpec with SparkSessionCreator with DatasetComparer {
   import spark.implicits._
 
   it("Simple general check") {
