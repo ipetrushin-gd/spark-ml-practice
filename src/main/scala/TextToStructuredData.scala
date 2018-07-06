@@ -20,6 +20,6 @@ object TextToStructuredData extends SparkSessionCreator {
 
     nonEmptyTweetsNormalized
       .map(extractFeaturesFromRawTweet)
-      .withColumn("id", monotonically_increasing_id())
+      .toDF()
   }
 }
