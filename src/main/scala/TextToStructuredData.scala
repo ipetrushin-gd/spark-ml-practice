@@ -13,8 +13,8 @@ object TextToStructuredData extends SparkSessionCreator {
       .flatMap(line => line.split("List\\("))
 
     val nonEmptyTweets = tweets
-      .map(line => line.stripLineEnd)
-      .filter(line => line.length() > 0)
+      .map(_.stripLineEnd)
+      .filter(_.isEmpty)
 
     val nonEmptyTweetsNormalized = nonEmptyTweets.transform[String](normalizeTweets())
 
