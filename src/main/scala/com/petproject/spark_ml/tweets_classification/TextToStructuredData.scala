@@ -1,12 +1,13 @@
 package com.petproject.spark_ml.tweets_classification
 
-import com.petproject.spark_ml.tweets_classification.FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
+import com.petproject.spark_ml.tweets_classification.FeaturesExtractionFromRawTweet.{extractFeaturesFromRawTweet,
+  StructuredTweet}
 import com.petproject.spark_ml.tweets_classification.TweetsNormalization.normalizeTweets
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, Dataset}
 
 object TextToStructuredData extends SparkSessionCreator {
-  def getStructuredDataFromText(text: Dataset[String]): DataFrame = {
+  def getStructuredDataFromText(text: Dataset[String]): Dataset[StructuredTweet] = {
     import spark.implicits._
 
     val aggregatedText = text.agg(concat_ws("\n", collect_list("value"))).as[String]
@@ -22,6 +23,5 @@ object TextToStructuredData extends SparkSessionCreator {
 
     nonEmptyTweetsNormalized
       .map(extractFeaturesFromRawTweet)
-      .toDF()
   }
 }
