@@ -1,8 +1,10 @@
+package com.petproject.spark_ml.tweets_classification
+
+import com.petproject.spark_ml.tweets_classification.TwitterSetup.setupTwitter
+import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.streaming.twitter._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import TwitterSetup.setupTwitter
 import twitter4j.FilterQuery
-import com.typesafe.scalalogging.LazyLogging
 
 object TwitterStream extends LazyLogging with ConfigurationCreator {
   def main(args: Array[String]) {

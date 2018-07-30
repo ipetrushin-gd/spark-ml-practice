@@ -1,8 +1,9 @@
+package com.petproject.spark_ml.tweets_classification
+
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
-import TextToStructuredData.getStructuredDataFromText
 
 object IsRetweetClassifier extends LazyLogging with SparkSessionCreator {
   def main(args: Array[String]) {

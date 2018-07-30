@@ -1,3 +1,5 @@
+package com.petproject.spark_ml.tweets_classification
+
 object FeaturesExtractionFromRawTweet {
   case class StructuredTweet(text: String, language: String, label: Int)
 

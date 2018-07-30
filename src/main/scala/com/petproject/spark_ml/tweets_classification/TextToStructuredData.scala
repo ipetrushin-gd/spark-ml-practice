@@ -1,6 +1,8 @@
+package com.petproject.spark_ml.tweets_classification
+
+import com.petproject.spark_ml.tweets_classification.FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
+import com.petproject.spark_ml.tweets_classification.TweetsNormalization.normalizeTweets
 import org.apache.spark.sql.functions._
-import TweetsNormalization.normalizeTweets
-import FeaturesExtractionFromRawTweet.extractFeaturesFromRawTweet
 import org.apache.spark.sql.{DataFrame, Dataset}
 
 object TextToStructuredData extends SparkSessionCreator {

@@ -1,6 +1,8 @@
+package com.petproject.spark_ml.tweets_classification
+
 import com.github.mrpowers.spark.fast.tests.DatasetComparer
+import com.petproject.spark_ml.tweets_classification.TextToStructuredData.getStructuredDataFromText
 import org.scalatest.FunSpec
-import TextToStructuredData.getStructuredDataFromText
 
 //TODO: switch to more concise and powerful spark-testing-base
 class TextToStructuredDataSpec extends FunSpec with SparkSessionCreator with DatasetComparer {

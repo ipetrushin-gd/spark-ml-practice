@@ -1,3 +1,5 @@
+package com.petproject.spark_ml.tweets_classification
+
 import org.apache.spark.sql.Dataset
 
 object TweetsNormalization extends SparkSessionCreator {

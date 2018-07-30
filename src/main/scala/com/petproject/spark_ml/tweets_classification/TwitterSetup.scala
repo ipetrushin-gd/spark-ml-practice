@@ -1,5 +1,8 @@
-import scala.io.Source
+package com.petproject.spark_ml.tweets_classification
+
 import java.io.InputStream
+
+import scala.io.Source
 
 object TwitterSetup {
   def setupTwitter() = {

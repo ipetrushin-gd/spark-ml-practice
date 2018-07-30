@@ -1,3 +1,5 @@
+package com.petproject.spark_ml.tweets_classification
+
 import org.apache.spark.sql.SparkSession
 
 //TODO: upgrade to a compile safe API (e.g. pureconfig)
